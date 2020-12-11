@@ -37,7 +37,15 @@ class CycleGAN(nn.Module):
                 betas=ADAM_BETA
         )
         # TODO LR schedulers?
+    
+    
+    def translate_XY(self, X):
+        with torch.no_grad():
+            return self.generator_Y(X * 2 - 1) * 0.5 + 0.5
 
+    def translate_YX(self, Y):
+        with torch.no_grad():
+            return self.generator_X(Y * 2 - 1) * 0.5 + 0.5
 
     def disc_loss(self, X, Y):
         X_generated = self.generator_X(Y)
