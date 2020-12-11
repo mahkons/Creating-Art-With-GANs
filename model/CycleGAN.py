@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import itertools
@@ -5,17 +6,18 @@ import itertools
 from networks import SmallDiscriminatorNet, SmallGeneratorNet
 from model.Losses import mathGANLoss, classicGANLoss, MSEGanLoss, reconstructionLoss
 
-device = torch.device("cpu")
-BATCH_SIZE = 32 # more better ?
-LR = 1e-4
+device = torch.device("cuda")
+BATCH_SIZE = 64 # more better ?
+LR = 2e-4
 epochs = 2
-n_disc = 5 # try == 1?
+n_disc = 1 # try == 1?
 
 ADAM_BETA = (0.0, 0.9)
 recon_lam = 10
 
-class CycleGAN():
+class CycleGAN(nn.Module):
     def __init__(self):
+        super(CycleGAN, self).__init__()
 
         self.discriminator_X = SmallDiscriminatorNet(1).to(device)
         self.discriminator_Y = SmallDiscriminatorNet(3).to(device)
@@ -90,3 +92,4 @@ class CycleGAN():
                 print(disc_loss, gen_loss)
                 # TODO logging
                 # TODO optimize generator not every iteration?
+            torch.save(self.state_dict(), os.path.join("generated", "CycleGAN"))
