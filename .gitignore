@@ -1,0 +1,10 @@
+# vim
+*.swp
+*.swn
+*.swn
+
+# python
+**/__pycache__/
+
+# data
+data
