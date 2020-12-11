@@ -7,11 +7,13 @@ class SmallGeneratorNet(nn.Module):
         super(SmallGeneratorNet, self).__init__()
         self.seq = nn.Sequential(
             nn.Conv2d(in_channels, 32, kernel_size=3, padding=1),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Conv2d(128, out_channels, kernel_size=3, padding=1),
             nn.Tanh()
         )

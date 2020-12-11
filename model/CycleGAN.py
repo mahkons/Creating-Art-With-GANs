@@ -9,7 +9,7 @@ from model.Losses import mathGANLoss, classicGANLoss, MSEGanLoss, reconstruction
 device = torch.device("cuda")
 BATCH_SIZE = 64 # more better ?
 LR = 2e-4
-epochs = 2
+epochs = 1
 n_disc = 1 # try == 1?
 
 ADAM_BETA = (0.0, 0.9)
@@ -68,10 +68,12 @@ class CycleGAN(nn.Module):
         X_reconstructed = self.generator_X(Y_generated)
         Y_reconstructed = self.generator_Y(X_generated)
 
-        gen_loss = MSEGanLoss(X_false, X_true) + MSEGanLoss(Y_false, Y_true) + \
-                recon_lam * (reconstructionLoss(X, X_reconstructed) + reconstructionLoss(Y, Y_reconstructed))
+        gen_loss = MSEGanLoss(X_false, X_true) + MSEGanLoss(Y_false, Y_true)
+        recon_loss = recon_lam * (reconstructionLoss(X, X_reconstructed) + reconstructionLoss(Y, Y_reconstructed))
 
-        return gen_loss
+        print(recon_loss)
+
+        return gen_loss + recon_loss
 
 
     def train(self, X_data, Y_data):
@@ -93,7 +95,7 @@ class CycleGAN(nn.Module):
                     gen_loss = self.gen_loss(X, Y)
                     self.optimizer_generators.zero_grad()
                     gen_loss.backward()
-                    self.optimizer_generators.zero_grad()
+                    self.optimizer_generators.step()
                 else:
                     gen_loss = 0
 
