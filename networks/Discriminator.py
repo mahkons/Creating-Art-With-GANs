@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+from utils.nets import define_D
+
 
 class SmallDiscriminatorNet(nn.Module):
     def __init__(self, in_channels):
@@ -19,6 +21,10 @@ class SmallDiscriminatorNet(nn.Module):
         return self.seq(x)
 
 
-
 class DiscriminatorNet(nn.Module):
-    pass
+    def __init__(self, in_channels):
+        super(DiscriminatorNet, self).__init__()
+        self.seq = define_D(in_channels, ndf=64, netD='basic')
+
+    def forward(self, x):
+        return self.seq(x)

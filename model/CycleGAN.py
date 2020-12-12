@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import itertools
 
-from networks import SmallDiscriminatorNet, SmallGeneratorNet
+from networks import SmallDiscriminatorNet, SmallGeneratorNet, DiscriminatorNet, GeneratorNet
 from model.Losses import mathGANLoss, classicGANLoss, MSEGanLoss, reconstructionLoss
 
 device = torch.device("cuda")
@@ -19,11 +19,11 @@ class CycleGAN(nn.Module):
     def __init__(self):
         super(CycleGAN, self).__init__()
 
-        self.discriminator_X = SmallDiscriminatorNet(1).to(device)
-        self.discriminator_Y = SmallDiscriminatorNet(3).to(device)
+        self.discriminator_X = DiscriminatorNet(1).to(device)  # SmallDiscriminatorNet(1).to(device)
+        self.discriminator_Y = DiscriminatorNet(3).to(device)  # SmallDiscriminatorNet(3).to(device)
 
-        self.generator_X = SmallGeneratorNet(3, 1).to(device)
-        self.generator_Y = SmallGeneratorNet(1, 3).to(device)
+        self.generator_X = GeneratorNet(3, 1).to(device)  # SmallGeneratorNet(3, 1).to(device)
+        self.generator_Y = GeneratorNet(1, 3).to(device)  # SmallGeneratorNet(1, 3).to(device)
 
         self.optimizer_discriminators = torch.optim.Adam(
                 itertools.chain(self.discriminator_X.parameters(), self.discriminator_Y.parameters()),

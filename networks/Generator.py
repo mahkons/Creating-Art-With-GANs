@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from utils.nets import define_G
 
 
 class SmallGeneratorNet(nn.Module):
@@ -23,4 +24,9 @@ class SmallGeneratorNet(nn.Module):
 
 
 class GeneratorNet(nn.Module):
-    pass
+    def __init__(self, in_channels, out_channels):
+        super(GeneratorNet, self).__init__()
+        self.seq = define_G(in_channels, out_channels, ngf=64, netG='resnet_9blocks')
+
+    def forward(self, x):
+        return self.seq(x)

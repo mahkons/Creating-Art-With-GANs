@@ -1,2 +1,2 @@
-from .Discriminator import SmallDiscriminatorNet
-from .Generator import SmallGeneratorNet
+from .Discriminator import SmallDiscriminatorNet, DiscriminatorNet
+from .Generator import SmallGeneratorNet, GeneratorNet
